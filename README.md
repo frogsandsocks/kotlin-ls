@@ -1,2 +1,0 @@
-# kotlin-ls
-University task

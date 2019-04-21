@@ -37,7 +37,7 @@ fun main(args: Array<String>) {
         // Parse options
         val line = parser.parse(options, args) ?: throw IllegalArgumentException()
 
-        // Create ls object with the line with options (TODO)
+        // Create ls object with the line with options
         val ls = Ls(line)
 
         // List files to specified file or to console
