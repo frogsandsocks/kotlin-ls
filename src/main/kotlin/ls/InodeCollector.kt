@@ -4,6 +4,7 @@ import java.io.File
 import java.io.IOException
 import java.util.Date
 import java.text.SimpleDateFormat
+import kotlin.IllegalArgumentException
 import kotlin.math.*
 
 /* Object for working with files and their inodes */
@@ -88,7 +89,6 @@ class InodeCollector {
 
         /*
          * If current directory is empty, we will not write anything to inodes Map
-         * TODO: check and exception for path to file, not to repository
          */
         if (givenFileObject.isDirectory and (givenFileObject.length() > 0)) {
 
@@ -108,7 +108,7 @@ class InodeCollector {
                     filePermissions(listedFileObject, permissionsOutputFormat)
                     )
             }
-        }
+        } else { throw IllegalArgumentException("Incorrect path to directory") }
         return inodes
     }
 }

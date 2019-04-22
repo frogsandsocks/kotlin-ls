@@ -47,7 +47,7 @@ fun main(args: Array<String>) {
     } catch(e: ParseException) {
 
         /* Oops, something went wrong, print error description */
-        println(e.message + "/n")
+        println(e.message + "\n")
 
         /* Automatically generate the help statement */
         val formatter = HelpFormatter()
@@ -63,8 +63,7 @@ fun main(args: Array<String>) {
             options,
             /* Footer for help */
             "\n" +
-                    "The SIZE argument is an integer and optional unit (example: 10K is 10*1024).\n" +
-                    "Units are K,M,G,T,P,E,Z,Y (powers of 1024) or KB,MB,... (powers of 1000)."
+                    "Size units are KB,MB,GB,TB,PB,EB (powers of 1024)."
         )
     }
 }

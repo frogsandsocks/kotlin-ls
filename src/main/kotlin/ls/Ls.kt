@@ -10,8 +10,11 @@ class Ls (private val parsedLine: CommandLine ) {
     var humanReadable = parsedLine.hasOption("h")
     private var reverse = parsedLine.hasOption("r")
     private val outputToFile = parsedLine.hasOption("o")
+
+    /* Path to file to redirect output from console */
     private val outputToFilePath = parsedLine.getOptionValue("o")
 
+    /* ls util output selection */
     private val output = if (outputToFile) { OutputFile(outputToFilePath) }
     else { OutputConsole() }
 
@@ -27,8 +30,6 @@ class Ls (private val parsedLine: CommandLine ) {
          * By default, this value converted to string, looks like this: "[/path/to/directory]" or just like "[]" if no
          * path was given
          * So we convert argList to string and then remove prefix ("[") and suffix ("]")
-         *
-         * TODO: check for correct arguments
          */
         var pathToFile = parsedLine.argList.toString().removeSurrounding("[", "]")
 
@@ -61,7 +62,7 @@ class Ls (private val parsedLine: CommandLine ) {
         if (long) { printFilesLongFormat(inodes) }
         else { printFilesShortFormat(inodes) }
 
-        output.closeFile()
+        output.close()
     }
 
     /*

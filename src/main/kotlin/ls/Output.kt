@@ -4,5 +4,5 @@ interface Output {
 
     fun print(data: String)
     fun println(data: String)
-    fun closeFile()
+    fun close()
 }

@@ -14,5 +14,5 @@ class OutputFile(pathToFile: String) : Output {
 
     override fun print(data: String) { writer.write(data) }
 
-    override fun closeFile() { writer.close() }
+    override fun close() { writer.close() }
 }
