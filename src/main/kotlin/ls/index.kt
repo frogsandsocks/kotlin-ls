@@ -56,7 +56,7 @@ fun main(args: Array<String>) {
         formatter.printHelp(
 
             /* Command */
-            "ls [OPTIONS]... [FILE]...\n",
+            "ls [-l] [-h] [-r] [-o output.file] directory_or_file\n",
             /* Header for help */
             "List information about the FILEs (the current directory by default).\n",
             /* Options object with ls arguments */

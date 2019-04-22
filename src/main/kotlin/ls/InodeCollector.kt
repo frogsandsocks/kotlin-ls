@@ -87,6 +87,8 @@ class InodeCollector {
         /* Create File object. */
         val givenFileObject = File(givenFilePath)
 
+        if (!givenFileObject.canWrite()) { throw IllegalArgumentException("Incorrect path to directory or file") }
+
         /*
          * If current directory is empty, we will not write anything to inodes Map
          */
@@ -108,7 +110,7 @@ class InodeCollector {
                     filePermissions(listedFileObject, permissionsOutputFormat)
                     )
             }
-        } else { throw IllegalArgumentException("Incorrect path to directory") }
+        }
         return inodes
     }
 }
