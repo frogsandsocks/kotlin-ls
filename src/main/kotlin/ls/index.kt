@@ -4,20 +4,20 @@ import org.apache.commons.cli.*
 import java.lang.IllegalArgumentException
 
 
-fun main(args: Array<String>) {
+fun main(args: String) {
 
     /* Create Option object */
     val options = Options()
 
     /*
      * Add "-l" ("--long" for long format) option for long listing format.
-     * Listing files with information about: rules, last modification time, size of file
+     * Listing files with information about: permissions, last modification time, size of file
      */
     options.addOption("l", "long", false, "use a long listing format")
 
     /*
      * Add "-h" option for human-readable output.
-     * When "-l" argument is given -> print size as an integer and size unit (for example KB or MB), print rules as rwx
+     * When "-l" argument is given -> print size as an integer and size unit (for example KB or MB), print permissions as rwx
      */
     options.addOption("h", false, "with -l, print human readable sizes")
 
@@ -27,21 +27,33 @@ fun main(args: Array<String>) {
     /* Add "-o" option for redirect output to specified file */
     options.addOption("o", "output", true, "output to specified file")
 
+    options.addOption("", "help", false, "print this help message")
 
     // Create the parser
     val parser = DefaultParser()
+
+    // Create ls object
+    val ls = Ls()
+
+
+
 
     /* If right arguments were passed */
     try {
 
         // Parse options
-        val line = parser.parse(options, args) ?: throw IllegalArgumentException()
+        val line = parser.parse(options, arrayOf(args)) ?: throw IllegalArgumentException()
 
-        // Create ls object with the line with options
-        val ls = Ls(line)
+        if ( line.hasOption("help") ) {
+            ls.printHelp(options)
+            return
+        }
+
+        // Print help if --help option is given
+        if ( line.hasOption("help") ) {  }
 
         // List files to specified file or to console
-        ls.printFiles()
+        ls.printFiles(line)
 
     /* If wrong arguments were passed and can't be parsed -> print help for ls */
     } catch(e: ParseException) {
@@ -49,21 +61,7 @@ fun main(args: Array<String>) {
         /* Oops, something went wrong, print error description */
         println(e.message + "\n")
 
-        /* Automatically generate the help statement */
-        val formatter = HelpFormatter()
-
-        /* Print help information for those who are lost... */
-        formatter.printHelp(
-
-            /* Command */
-            "ls [-l] [-h] [-r] [-o output.file] directory_or_file\n",
-            /* Header for help */
-            "List information about the FILEs (the current directory by default).\n",
-            /* Options object with ls arguments */
-            options,
-            /* Footer for help */
-            "\n" +
-                    "Size units are KB,MB,GB,TB,PB,EB (powers of 1024)."
-        )
+        /* Print help message */
+        ls.printHelp(options)
     }
 }

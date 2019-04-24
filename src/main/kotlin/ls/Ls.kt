@@ -1,26 +1,49 @@
 package ls
 
 import org.apache.commons.cli.CommandLine
+import org.apache.commons.cli.HelpFormatter
+import org.apache.commons.cli.Options
 
 /* Ls object to working with inodes and configure final output. */
-class Ls (private val parsedLine: CommandLine ) {
+class Ls {
 
-    /* Ls util options like booleans to easier work with them */
-    private var long = parsedLine.hasOption("l")
-    var humanReadable = parsedLine.hasOption("h")
-    private var reverse = parsedLine.hasOption("r")
-    private val outputToFile = parsedLine.hasOption("o")
 
-    /* Path to file to redirect output from console */
-    private val outputToFilePath = parsedLine.getOptionValue("o")
+    fun printHelp(options: Options) {
 
-    /* ls util output selection */
-    private val output = if (outputToFile) { OutputFile(outputToFilePath) }
-    else { OutputConsole() }
+        /* Automatically generate the help statement */
+        val formatter = HelpFormatter()
+
+        /* Print help information for those who are lost... */
+        formatter.printHelp(
+
+            /* Command */
+            "ls [-l] [-h] [-r] [-o output.file] directory_or_file\n",
+            /* Header for help */
+            "List information about the FILEs (the current directory by default).\n",
+            /* Options object with ls arguments */
+            options,
+            /* Footer for help */
+            "\n" +
+                    "Size units are KB,MB,GB,TB,PB,EB (powers of 1024)."
+        )
+    }
 
 
     /* Function to configure output for received inodes from InodeCollector object */
-    fun printFiles() {
+    fun printFiles( parsedLine: CommandLine ) {
+
+        /* Ls util options like booleans to easier work with them */
+        val long = parsedLine.hasOption("l")
+        val humanReadable = parsedLine.hasOption("h")
+        val reverse = parsedLine.hasOption("r")
+        val outputToFile = parsedLine.hasOption("o")
+
+        /* Path to file to redirect output from console */
+        val outputToFilePath = parsedLine.getOptionValue("o")
+
+        /* ls util output selection */
+        val output = if (outputToFile) { OutputFile(outputToFilePath) }
+        else { OutputConsole() }
 
         /* Create object InodeCollector for getting inodes in current/specified directory */
         val inodeCollector = InodeCollector()
@@ -59,8 +82,8 @@ class Ls (private val parsedLine: CommandLine ) {
         if (reverse) { inodes = inodes.toSortedMap(Comparator.reverseOrder()) }
 
         /* If -l (--long) argument were specified -> output in long format */
-        if (long) { printFilesLongFormat(inodes) }
-        else { printFilesShortFormat(inodes) }
+        if (long) { printFilesLongFormat(inodes, output) }
+        else { printFilesShortFormat(inodes, output) }
 
         output.close()
     }
@@ -70,7 +93,7 @@ class Ls (private val parsedLine: CommandLine ) {
      *
      * TODO: output with right align
      */
-    private fun printFilesShortFormat(filesInfo: MutableMap<String, Inode>) {
+    private fun printFilesShortFormat(filesInfo: MutableMap<String, Inode>, output: Output) {
 
         filesInfo.forEach { (filename, _) ->
 
@@ -79,16 +102,16 @@ class Ls (private val parsedLine: CommandLine ) {
     }
 
     /* Detailed output for ls with --long option */
-    private fun printFilesLongFormat(filesInfo: MutableMap<String, Inode>) {
+    private fun printFilesLongFormat(filesInfo: MutableMap<String, Inode>, output: Output) {
 
         filesInfo.forEach { (fileName, fileInfo) ->
 
             /* Print size of file, last edited time, name */
             output.println (
                 fileInfo.permissions + "\t" +
-                    fileInfo.size.toString() + "\t" +
-                    fileInfo.lastEditedTime.toString() + "\t" +
-                    fileName
+                        fileInfo.size + "\t" +
+                        fileInfo.lastEditedTime + "\t" +
+                        fileName
             )
         }
     }

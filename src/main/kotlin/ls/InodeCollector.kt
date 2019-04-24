@@ -54,7 +54,10 @@ class InodeCollector {
         return dateFormatter.format(fileLastModificationTimeDateObject) ?: throw IOException()
     }
 
-    /* Collect information about file's permissions in "rwx" style */
+    /* Collect information about file's permissions in "rwx" style
+     *
+     * TODO: list permissions for all users
+     */
     private fun filePermissions(file: File, permissionsInBitmask: Boolean): String {
 
         /* Check file's permissions */
