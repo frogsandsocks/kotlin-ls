@@ -3,8 +3,8 @@ package ls
 import org.apache.commons.cli.*
 import java.lang.IllegalArgumentException
 
-
-fun main(args: String) {
+// args: String
+fun main(args:Array<String>) {
 
     /* Create Option object */
     val options = Options()
@@ -42,15 +42,12 @@ fun main(args: String) {
     try {
 
         // Parse options
-        val line = parser.parse(options, arrayOf(args)) ?: throw IllegalArgumentException()
+        val line = parser.parse(options, args) ?: throw IllegalArgumentException()
 
         if ( line.hasOption("help") ) {
             ls.printHelp(options)
             return
         }
-
-        // Print help if --help option is given
-        if ( line.hasOption("help") ) {  }
 
         // List files to specified file or to console
         ls.printFiles(line)

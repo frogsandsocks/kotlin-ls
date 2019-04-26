@@ -1,0 +1,10 @@
+/Users/cwc/IdeaProjects/kotlin-ls-a/src/main/kotlin/tests/OutputFileTest.kt
+/Users/cwc/IdeaProjects/kotlin-ls-a/src/main/kotlin/tests/InodeCollectorTest.kt
+/Users/cwc/IdeaProjects/kotlin-ls-a/src/main/kotlin/ls/InodeType.kt
+/Users/cwc/IdeaProjects/kotlin-ls-a/src/main/kotlin/ls/InodeCollector.kt
+/Users/cwc/IdeaProjects/kotlin-ls-a/src/main/kotlin/ls/Output.kt
+/Users/cwc/IdeaProjects/kotlin-ls-a/src/main/kotlin/ls/index.kt
+/Users/cwc/IdeaProjects/kotlin-ls-a/src/main/kotlin/ls/OutputFile.kt
+/Users/cwc/IdeaProjects/kotlin-ls-a/src/main/kotlin/ls/OutputConsole.kt
+/Users/cwc/IdeaProjects/kotlin-ls-a/src/main/kotlin/ls/Inode.kt
+/Users/cwc/IdeaProjects/kotlin-ls-a/src/main/kotlin/ls/Ls.kt

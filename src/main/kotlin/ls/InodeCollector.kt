@@ -72,30 +72,30 @@ class InodeCollector {
                     (if (filePermissionsWritable) "1" else "0") +
                     (if (filePermissionsExecutable) "1" else "0")
 
-        } else {
-
-            /* Value in "rwx" style for "permissions" option */
-            return (if (filePermissionsReadable) "r" else "-") +
-                    (if (filePermissionsWritable) "w" else "-") +
-                    (if (filePermissionsExecutable) "x" else "-")
         }
+
+        /* Value in "rwx" style for "permissions" option */
+        return (if (filePermissionsReadable) "r" else "-") +
+                (if (filePermissionsWritable) "w" else "-") +
+                (if (filePermissionsExecutable) "x" else "-")
     }
 
     /* Function for compile information about files in specified directory */
     fun collect(givenFilePath: String,
-                sizeOutputFormat: Boolean,
-                permissionsOutputFormat: Boolean)
+                sizeInBytes: Boolean,
+                permissionsInBitmask: Boolean)
             : MutableMap<String, Inode> {
 
         /* Create File object. */
         val givenFileObject = File(givenFilePath)
 
-        if (!givenFileObject.canWrite()) { throw IllegalArgumentException("Incorrect path to directory or file") }
+        // Check is this inode available for read?
+        if (!givenFileObject.canRead()) { throw IllegalArgumentException("Incorrect path to directory or file") }
 
         /*
          * If current directory is empty, we will not write anything to inodes Map
          */
-        if (givenFileObject.isDirectory and (givenFileObject.length() > 0)) {
+        if (givenFileObject.isDirectory && (givenFileObject.list().count() > 0)) {
 
             /* Iterate through all files in directory */
             givenFileObject.list().forEach { listedFileName ->
@@ -108,11 +108,21 @@ class InodeCollector {
                 /* Add current file and its inode to inodes */
                 inodes[listedFileName] = Inode(
                     fileType(listedFileObject),
-                    fileSize(listedFileObject, sizeOutputFormat),
-                    fileLastModified(listedFileObject),
-                    filePermissions(listedFileObject, permissionsOutputFormat)
+                    fileSize(listedFileObject, sizeInBytes),
+                    filePermissions(listedFileObject, permissionsInBitmask),
+                    fileLastModified(listedFileObject)
                     )
             }
+
+        } else {
+
+            inodes[givenFileObject.name] = Inode(
+                fileType(givenFileObject),
+                fileSize(givenFileObject, sizeInBytes),
+                filePermissions(givenFileObject, permissionsInBitmask),
+                fileLastModified(givenFileObject)
+            )
+
         }
         return inodes
     }

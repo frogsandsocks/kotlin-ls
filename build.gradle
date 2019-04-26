@@ -16,7 +16,9 @@ dependencies {
     
     implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'
     compile group: 'commons-cli', name: 'commons-cli', version: '1.4'
-    //testCompile group: 'junit', name: 'junit', version: '5.4.2'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.5.0-M1'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.5.0-M1'
+    testImplementation 'org.junit-pioneer:junit-pioneer:0.1.2'
 }
 
 compileKotlin {
